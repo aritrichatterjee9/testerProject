@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction Tester</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #box {
+            width: 200px;
+            height: 200px;
+            background-color: #3498db;
+            cursor: pointer;
+            position: absolute;
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Reaction Tester</h1>
+
+<div id="box"></div>
+
+<script>
+    var start_time, end_time;
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    function getRandomShape() {
+        return Math.random() < 0.5 ? 'square' : 'circle';
+    }
+
+    function makeBox() {
+        var box = document.getElementById('box');
+        var windowWidth = window.innerWidth - 200;
+        var windowHeight = window.innerHeight - 200;
+
+        var randomX = Math.random() * windowWidth;
+        var randomY = Math.random() * windowHeight;
+
+        box.style.backgroundColor = getRandomColor();
+        box.style.left = randomX + 'px';
+        box.style.top = randomY + 'px';
+
+        var shape = getRandomShape();
+        if (shape === 'circle') {
+            box.style.borderRadius = '50%';
+        } else {
+            box.style.borderRadius = '0';
+        }
+
+        start_time = new Date().getTime();
+    }
+
+    function appearAfterDelay() {
+        makeBox(); // Immediately create the first box when the page loads
+        setTimeout(makeBox, Math.random() * 2000);
+    }
+
+    document.getElementById('box').onclick = function () {
+        if (start_time) { // Check if start_time is defined
+            end_time = new Date().getTime();
+            var reaction_time = (end_time - start_time) / 1000; // in seconds
+            alert('Your reaction time is: ' + reaction_time + ' seconds');
+        }
+        appearAfterDelay();
+    };
+
+    appearAfterDelay();
+</script>
+
+</body>
+</html>
